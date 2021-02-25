@@ -2,11 +2,16 @@
 
 namespace Styde;
 
-class LunchBox implements \IteratorAggregate, \Countable
-{
-    protected $food = [];
+use Countable;
+use ArrayIterator;
+use IteratorAggregate;
+use JetBrains\PhpStorm\Pure;
 
-    protected $original = true;
+class LunchBox implements IteratorAggregate, Countable
+{
+    protected array $food = [];
+
+    protected bool $original = true;
 
     public function __construct(array $food = [])
     {
@@ -18,14 +23,14 @@ class LunchBox implements \IteratorAggregate, \Countable
         $this->original = false;
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->food;
     }
 
-    public function filter($callback)
+    public function filter($callback): self
     {
-        return new static(array_filter($this->food, $callback));
+        return new self(array_filter($this->food, $callback));
     }
 
     public function shift()
@@ -33,17 +38,17 @@ class LunchBox implements \IteratorAggregate, \Countable
         return array_shift($this->food);
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->food);
     }
 
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->food);
+        return new ArrayIterator($this->food);
     }
 
-    public function count()
+    #[Pure] public function count(): int
     {
         return count($this->food);
     }
