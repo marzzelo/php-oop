@@ -2,9 +2,11 @@
 
 namespace Styde;
 
+use JetBrains\PhpStorm\Pure;
+
 abstract class Model
 {
-    protected $attributes = [];
+    protected array $attributes = [];
 
     public function __construct(array $attributes = [])
     {
@@ -16,7 +18,7 @@ abstract class Model
         $this->attributes = $attributes;
     }
 
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -32,7 +34,7 @@ abstract class Model
         return $value;
     }
 
-    protected function hasGetMutator($name)
+    protected function hasGetMutator($name): bool
     {
         return method_exists($this, 'get'.Str::studly($name).'Attribute');
     }
@@ -42,7 +44,7 @@ abstract class Model
         return $this->{'get'.Str::studly($name).'Attribute'}($value);
     }
 
-    public function getAttributeValue($name)
+    #[Pure] public function getAttributeValue($name)
     {
         if (array_key_exists($name, $this->attributes)) {
             return $this->attributes[$name];

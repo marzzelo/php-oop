@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\Pure;
+
 class Time {
 
     protected $time = null;
@@ -9,19 +11,19 @@ class Time {
         $this->time = $time ?: time();
     }
 
-    public function __toString()
+    #[Pure] public function __toString(): string
     {
         return date('d/m/Y H:i:s', $this->time);
     }
 
-    public function tomorrow()
+    public function tomorrow(): Time
     {
-        return new Time($this->time + 24*60*60);
+        return new self($this->time + 24*60*60);
     }
 
-    public function yesterday()
+    public function yesterday(): Time
     {
-        return new Time($this->time - 24*60*60);
+        return new self($this->time - 24*60*60);
     }
 }
 
@@ -32,7 +34,7 @@ $today2 = new Time();
 
 echo "<p>Hoy es {$today2}</p>";
 
-$tomorrow = $today->tomorrow();
+$tomorrow = $today->tomorrow(); // $tomorrow es ahora un objeto de la clase Time
 
 echo "<p>Mañana será {$tomorrow}</p>";
 

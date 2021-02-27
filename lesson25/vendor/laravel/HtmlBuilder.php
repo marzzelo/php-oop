@@ -2,11 +2,14 @@
 
 namespace Laravel;
 
+/**
+ * @method success(string $string)
+ */
 class HtmlBuilder
 {
     use Macroable;
 
-    public function hr()
+    public function hr(): string
     {
         return "<hr>";
     }

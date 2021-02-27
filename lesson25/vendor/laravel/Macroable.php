@@ -2,29 +2,29 @@
 
 namespace Laravel;
 
+use Closure;
+use BadMethodCallException;
+
 trait Macroable
 {
-    private static $macros = [];
+	private static array $macros = [];
 
-    public static function hasMacro($method)
-    {
-        return isset (static::$macros[$method]);
-    }
+	public static function hasMacro($method): bool
+	{
+		return isset (static::$macros[$method]);
+	}
 
-    public static function macro($method, \Closure $macro)
-    {
-        static::$macros[$method] = $macro;
-    }
+	public static function macro($method, Closure $macro)
+	{
+		static::$macros[$method] = $macro;
+	}
 
-    public function __call($method, array $arguments)
-    {
-        if (static::hasMacro($method)) {
-            return call_user_func_array(
-                static::$macros[$method]->bindTo($this, static::class),
-                $arguments
-                );
-        }
+	public function __call($method, array $arguments)
+	{
+		if (self::hasMacro($method)) {
+			return call_user_func_array(self::$macros[$method]->bindTo($this, self::class), $arguments);
+		}
 
-        throw new \BadMethodCallException("The method {$method} does no exist");
-    }
+		throw new BadMethodCallException("The method {$method} does no exist");
+	}
 }
